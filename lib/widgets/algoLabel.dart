@@ -1,0 +1,35 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class AlgoLabels extends StatelessWidget {
+  final String algoName;
+  final Function pageRoute;
+
+  const AlgoLabels({Key key, this.pageRoute, this.algoName}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => pageRoute,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.3,
+        decoration: BoxDecoration(
+            color: CupertinoColors.white,
+            borderRadius: BorderRadius.circular(15.0),
+            boxShadow: [
+              BoxShadow(
+                color: CupertinoColors.secondaryLabel,
+                blurRadius: 8.0,
+                spreadRadius: 2.0,
+                offset: Offset(0, 4),
+              ),
+            ]),
+        child: Center(
+            child: Text(
+          algoName,
+          style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.05),
+        )),
+      ),
+    );
+  }
+}
