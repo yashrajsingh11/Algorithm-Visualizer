@@ -80,13 +80,15 @@ class AlgoOptions extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                AlgoLabels(
-                  algoName: "Bubble Short",
-                  pageRoute: () => Navigator.push(
+                GestureDetector(
+                  onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                       builder: (context) => BubbleShort(),
                     ),
+                  ),
+                  child: AlgoLabels(
+                    algoName: "Bubble Short",
                   ),
                 ),
                 AlgoLabels(
