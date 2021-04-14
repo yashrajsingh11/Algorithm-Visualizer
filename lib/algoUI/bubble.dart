@@ -132,7 +132,22 @@ class _BubbleShortState extends State<BubbleShort> {
                         print(e.message);
                       }
                     })
-                : SizedBox(),
+                : CupertinoButton(
+                    color: CupertinoColors.systemRed,
+                    child: Text("Sort"),
+                    onPressed: () {
+                      int temp = 0;
+                      for (int i = 0; i < numbersinput.length - 1; i++) {
+                        for (int j = 1; j < (numbersinput.length - i); j++) {
+                          if (numbersinput[j - 1] > numbersinput[j]) {
+                            temp = numbersinput[j - 1];
+                            numbersinput[j - 1] = numbersinput[j];
+                            numbersinput[j] = temp;
+                            setState(() {});
+                          }
+                        }
+                      }
+                    }),
           ],
         ),
       ),
