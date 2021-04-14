@@ -40,9 +40,12 @@ class _BubbleShortState extends State<BubbleShort> {
             SizedBox(height: 50),
             numbersinput.isNotEmpty
                 ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AnimatedOpacity(
                         opacity: _opa,
+                        curve: Curves.decelerate,
                         duration: Duration(milliseconds: 4000),
                         child: BubbleDigits(
                           numbers: numbersinput[0].toString(),
@@ -50,6 +53,7 @@ class _BubbleShortState extends State<BubbleShort> {
                       ),
                       AnimatedOpacity(
                         opacity: _opa,
+                        curve: Curves.decelerate,
                         duration: Duration(milliseconds: 4000),
                         child: BubbleDigits(
                           numbers: numbersinput[1].toString(),
@@ -57,6 +61,7 @@ class _BubbleShortState extends State<BubbleShort> {
                       ),
                       AnimatedOpacity(
                         opacity: _opa,
+                        curve: Curves.decelerate,
                         duration: Duration(milliseconds: 4000),
                         child: BubbleDigits(
                           numbers: numbersinput[2].toString(),
@@ -64,6 +69,7 @@ class _BubbleShortState extends State<BubbleShort> {
                       ),
                       AnimatedOpacity(
                         opacity: _opa,
+                        curve: Curves.decelerate,
                         duration: Duration(milliseconds: 4000),
                         child: BubbleDigits(
                           numbers: numbersinput[3].toString(),
@@ -71,6 +77,7 @@ class _BubbleShortState extends State<BubbleShort> {
                       ),
                       AnimatedOpacity(
                         opacity: _opa,
+                        curve: Curves.decelerate,
                         duration: Duration(milliseconds: 4000),
                         child: BubbleDigits(
                           numbers: numbersinput[4].toString(),
@@ -78,6 +85,7 @@ class _BubbleShortState extends State<BubbleShort> {
                       ),
                       AnimatedOpacity(
                         opacity: _opa,
+                        curve: Curves.decelerate,
                         duration: Duration(milliseconds: 4000),
                         child: BubbleDigits(
                           numbers: numbersinput[5].toString(),
@@ -114,6 +122,7 @@ class _BubbleShortState extends State<BubbleShort> {
                     numbersinput.add(int.parse(n5));
                     numbersinput.add(int.parse(n6));
                     setState(() {
+                      showText = false;
                       _opa = 1;
                     });
                   } catch (e) {
