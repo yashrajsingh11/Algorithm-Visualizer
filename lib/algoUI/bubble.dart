@@ -21,6 +21,7 @@ class _BubbleShortState extends State<BubbleShort> {
   String get n6 => _input6.text;
   List<int> numbersinput = [];
   double _opa = 0;
+  bool showText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +39,67 @@ class _BubbleShortState extends State<BubbleShort> {
             ),
             SizedBox(height: 50),
             numbersinput.isNotEmpty
-                ? AnimatedOpacity(
-                    opacity: _opa,
-                    duration: Duration(milliseconds: 400),
-                    child: BubbleDigits(
-                      numbers: numbersinput[0].toString(),
-                    ),
+                ? Row(
+                    children: [
+                      AnimatedOpacity(
+                        opacity: _opa,
+                        duration: Duration(milliseconds: 4000),
+                        child: BubbleDigits(
+                          numbers: numbersinput[0].toString(),
+                        ),
+                      ),
+                      AnimatedOpacity(
+                        opacity: _opa,
+                        duration: Duration(milliseconds: 4000),
+                        child: BubbleDigits(
+                          numbers: numbersinput[1].toString(),
+                        ),
+                      ),
+                      AnimatedOpacity(
+                        opacity: _opa,
+                        duration: Duration(milliseconds: 4000),
+                        child: BubbleDigits(
+                          numbers: numbersinput[2].toString(),
+                        ),
+                      ),
+                      AnimatedOpacity(
+                        opacity: _opa,
+                        duration: Duration(milliseconds: 4000),
+                        child: BubbleDigits(
+                          numbers: numbersinput[3].toString(),
+                        ),
+                      ),
+                      AnimatedOpacity(
+                        opacity: _opa,
+                        duration: Duration(milliseconds: 4000),
+                        child: BubbleDigits(
+                          numbers: numbersinput[4].toString(),
+                        ),
+                      ),
+                      AnimatedOpacity(
+                        opacity: _opa,
+                        duration: Duration(milliseconds: 4000),
+                        child: BubbleDigits(
+                          numbers: numbersinput[5].toString(),
+                        ),
+                      ),
+                    ],
                   )
                 : Text(''),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                EnterDigits(controller: _input1),
-                EnterDigits(controller: _input2),
-                EnterDigits(controller: _input3),
-                EnterDigits(controller: _input4),
-                EnterDigits(controller: _input5),
-                EnterDigits(controller: _input6),
-              ],
-            ),
+            showText
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      EnterDigits(controller: _input1),
+                      EnterDigits(controller: _input2),
+                      EnterDigits(controller: _input3),
+                      EnterDigits(controller: _input4),
+                      EnterDigits(controller: _input5),
+                      EnterDigits(controller: _input6),
+                    ],
+                  )
+                : SizedBox(),
             SizedBox(height: 50),
             CupertinoButton(
                 color: Colors.black,
@@ -92,7 +134,14 @@ class BubbleDigits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(child: Text(numbers));
+    return CircleAvatar(
+      radius: 50,
+      backgroundColor: Colors.black,
+      child: Text(
+        numbers,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
   }
 }
 
@@ -107,6 +156,7 @@ class EnterDigits extends StatelessWidget {
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         maxLength: 1,
+        textAlign: TextAlign.center,
         controller: controller,
       ),
     );
