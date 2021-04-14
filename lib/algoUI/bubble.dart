@@ -20,6 +20,7 @@ class _BubbleShortState extends State<BubbleShort> {
   String get n5 => _input5.text;
   String get n6 => _input6.text;
   List<int> numbersinput = [];
+  double _opa = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,15 @@ class _BubbleShortState extends State<BubbleShort> {
               style: TextStyle(fontSize: 38, color: Colors.white),
             ),
             SizedBox(height: 50),
-            numbersinput.isNotEmpty?
+            numbersinput.isNotEmpty
+                ? AnimatedOpacity(
+                    opacity: _opa,
+                    duration: Duration(milliseconds: 400),
+                    child: BubbleDigits(
+                      numbers: n1,
+                    ),
+                  )
+                : Text(''),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
