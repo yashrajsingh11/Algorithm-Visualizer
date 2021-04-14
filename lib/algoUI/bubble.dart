@@ -71,6 +71,9 @@ class _BubbleShortState extends State<BubbleShort> {
                     numbersinput.add(int.parse(n4));
                     numbersinput.add(int.parse(n5));
                     numbersinput.add(int.parse(n6));
+                    setState(() {
+                      _opa = 1;
+                    });
                   } catch (e) {
                     print(e.message);
                   }
