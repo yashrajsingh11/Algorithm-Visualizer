@@ -1,4 +1,6 @@
+import 'package:algori/algoUI/Merge.dart';
 import 'package:algori/algoUI/bubble.dart';
+import 'package:algori/algoUI/quick.dart';
 import 'package:algori/widgets/algoLabel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -84,18 +86,34 @@ class AlgoOptions extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => BubbleShort(),
+                      builder: (context) => BubbleSort(),
                     ),
                   ),
                   child: AlgoLabels(
-                    algoName: "Bubble Short",
+                    algoName: "Bubble Sort",
                   ),
                 ),
-                AlgoLabels(
-                  algoName: "Quick Short",
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => QuickSort(),
+                    ),
+                  ),
+                  child: AlgoLabels(
+                    algoName: "Quick Sort",
+                  ),
                 ),
-                AlgoLabels(
-                  algoName: "Merge Short",
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => MergeSort(),
+                    ),
+                  ),
+                  child: AlgoLabels(
+                    algoName: "Merge Sort",
+                  ),
                 ),
               ],
             ),
