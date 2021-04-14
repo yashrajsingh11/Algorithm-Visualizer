@@ -42,7 +42,7 @@ class _BubbleShortState extends State<BubbleShort> {
                     opacity: _opa,
                     duration: Duration(milliseconds: 400),
                     child: BubbleDigits(
-                      numbers: n1,
+                      numbers: numbersinput[0].toString(),
                     ),
                   )
                 : Text(''),
