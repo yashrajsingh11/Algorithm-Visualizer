@@ -22,6 +22,7 @@ class _BubbleShortState extends State<BubbleShort> {
   List<int> numbersinput = [];
   double _opa = 0;
   bool showText = true;
+  bool shortDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -132,22 +133,34 @@ class _BubbleShortState extends State<BubbleShort> {
                         print(e.message);
                       }
                     })
-                : CupertinoButton(
-                    color: CupertinoColors.systemRed,
-                    child: Text("Sort"),
-                    onPressed: () {
-                      int temp = 0;
-                      for (int i = 0; i < numbersinput.length - 1; i++) {
-                        for (int j = 1; j < (numbersinput.length - i); j++) {
-                          if (numbersinput[j - 1] > numbersinput[j]) {
-                            temp = numbersinput[j - 1];
-                            numbersinput[j - 1] = numbersinput[j];
-                            numbersinput[j] = temp;
-                            setState(() {});
+                : !shortDone
+                    ? CupertinoButton(
+                        color: CupertinoColors.systemRed,
+                        child: Text("Sort"),
+                        onPressed: () {
+                          int temp = 0;
+                          for (int i = 0; i < numbersinput.length - 1; i++) {
+                            for (int j = 1;
+                                j < (numbersinput.length - i);
+                                j++) {
+                              if (numbersinput[j - 1] > numbersinput[j]) {
+                                temp = numbersinput[j - 1];
+                                numbersinput[j - 1] = numbersinput[j];
+                                numbersinput[j] = temp;
+                                setState(() {});
+                              }
+                            }
                           }
-                        }
-                      }
-                    }),
+                        })
+                    : CupertinoButton(
+                        color: CupertinoColors.darkBackgroundGray,
+                        child: Text("Done"),
+                        onPressed: () {
+                          setState(() {
+                            shortDone = true;
+                          });
+                          Navigator.pop(context);
+                        }),
           ],
         ),
       ),
