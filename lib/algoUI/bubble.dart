@@ -33,10 +33,12 @@ class _BubbleShortState extends State<BubbleShort> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(width: double.infinity),
-            Text(
-              "Enter the Digits",
-              style: TextStyle(fontSize: 38, color: Colors.white),
-            ),
+            showText
+                ? Text(
+                    "Enter the Digits",
+                    style: TextStyle(fontSize: 38, color: Colors.white),
+                  )
+                : Text(''),
             SizedBox(height: 50),
             numbersinput.isNotEmpty
                 ? Row(
@@ -109,26 +111,28 @@ class _BubbleShortState extends State<BubbleShort> {
                   )
                 : SizedBox(),
             SizedBox(height: 50),
-            CupertinoButton(
-                color: Colors.black,
-                child: Text("Done"),
-                onPressed: () {
-                  try {
-                    validate(n1, n2, n3, n4, n5, n6);
-                    numbersinput.add(int.parse(n1));
-                    numbersinput.add(int.parse(n2));
-                    numbersinput.add(int.parse(n3));
-                    numbersinput.add(int.parse(n4));
-                    numbersinput.add(int.parse(n5));
-                    numbersinput.add(int.parse(n6));
-                    setState(() {
-                      showText = false;
-                      _opa = 1;
-                    });
-                  } catch (e) {
-                    print(e.message);
-                  }
-                })
+            showText
+                ? CupertinoButton(
+                    color: Colors.black,
+                    child: Text("Done"),
+                    onPressed: () {
+                      try {
+                        validate(n1, n2, n3, n4, n5, n6);
+                        numbersinput.add(int.parse(n1));
+                        numbersinput.add(int.parse(n2));
+                        numbersinput.add(int.parse(n3));
+                        numbersinput.add(int.parse(n4));
+                        numbersinput.add(int.parse(n5));
+                        numbersinput.add(int.parse(n6));
+                        setState(() {
+                          showText = false;
+                          _opa = 1;
+                        });
+                      } catch (e) {
+                        print(e.message);
+                      }
+                    })
+                : SizedBox(),
           ],
         ),
       ),
