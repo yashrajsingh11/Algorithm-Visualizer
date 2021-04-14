@@ -183,7 +183,7 @@ class EnterDigits extends StatelessWidget {
       width: 50,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
-        maxLength: 1,
+        maxLength: 3,
         textAlign: TextAlign.center,
         controller: controller,
       ),
