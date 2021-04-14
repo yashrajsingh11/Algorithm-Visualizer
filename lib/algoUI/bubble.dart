@@ -151,14 +151,24 @@ class _BubbleShortState extends State<BubbleShort> {
                               }
                             }
                           }
+                          setState(() {
+                            shortDone = true;
+                          });
                         })
                     : CupertinoButton(
                         color: CupertinoColors.darkBackgroundGray,
                         child: Text("Done"),
                         onPressed: () {
                           setState(() {
-                            shortDone = true;
+                            numbersinput.clear();
+                            _input1.clear();
+                            _input2.clear();
+                            _input3.clear();
+                            _input4.clear();
+                            _input5.clear();
+                            _input6.clear();
                           });
+
                           Navigator.pop(context);
                         }),
           ],
