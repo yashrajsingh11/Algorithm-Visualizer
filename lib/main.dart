@@ -86,7 +86,7 @@ class AlgoOptions extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => BubbleSort(),
+                      builder: (context) => BubbleShort(),
                     ),
                   ),
                   child: AlgoLabels(
