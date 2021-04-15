@@ -48,6 +48,7 @@ class _BubbleShortState extends State<BubbleShort>
   String get n5 => _input5.text;
   String get n6 => _input6.text;
   List<int> numbersinput = [23, 342, 22, 3, 56, 8];
+
   double _opa = 0;
   bool showText = true;
   bool shortDone = false;
@@ -81,46 +82,36 @@ class _BubbleShortState extends State<BubbleShort>
             //     : Text(''),
             SizedBox(height: 50),
             numbersinput.isNotEmpty
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                        Container(
-                          height: 200,
-                          child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                Center(
-                                  child: BubbleDigits(
-                                    numbers: numbersinput[0].toString(),
-                                  ),
-                                ),
-                                Center(
-                                  child: BubbleDigits(
-                                    numbers: numbersinput[1].toString(),
-                                  ),
-                                ),
-                                Center(
-                                  child: BubbleDigits(
-                                    numbers: numbersinput[2].toString(),
-                                  ),
-                                ),
-                                Center(
-                                  child: BubbleDigits(
-                                    numbers: numbersinput[3].toString(),
-                                  ),
-                                ),
-                                Center(
-                                  child: BubbleDigits(
-                                    numbers: numbersinput[4].toString(),
-                                  ),
-                                ),
-                                BubbleDigits(
-                                  numbers: numbersinput[5].toString(),
-                                ),
-                              ]),
-                        )
-                      ])
+                ? Column(children: [
+                    Container(width: double.infinity),
+                    Container(
+                      height: 120,
+                      child: Center(
+                        child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              BubbleDigits(
+                                numbers: numbersinput[0].toString(),
+                              ),
+                              BubbleDigits(
+                                numbers: numbersinput[1].toString(),
+                              ),
+                              BubbleDigits(
+                                numbers: numbersinput[2].toString(),
+                              ),
+                              BubbleDigits(
+                                numbers: numbersinput[3].toString(),
+                              ),
+                              BubbleDigits(
+                                numbers: numbersinput[4].toString(),
+                              ),
+                              BubbleDigits(
+                                numbers: numbersinput[5].toString(),
+                              ),
+                            ]),
+                      ),
+                    )
+                  ])
                 : Text(''),
             // showText
             //     ? Row(
