@@ -70,6 +70,7 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
     }
 
     setState(() {
+      _colorsX = CupertinoColors.systemPurple;
       _error = "No element found";
     });
   }
@@ -246,6 +247,9 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
                             onPressed: () {
                               setState(() {
                                 _error = "";
+                                _success = "";
+                                _foundIndex = -1;
+                                _colorsX = CupertinoColors.systemPurple;
                               });
                               _linearSearch();
                             },
