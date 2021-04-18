@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:algori/enterTextField/textField.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -121,10 +122,7 @@ class _BubbleShortState extends State<BubbleShort> {
       if (number > 95 && number <= 1000) {
         return Color(0xff1E3F66);
       }
-
     }
-
-
 
     return Scaffold(
       appBar: CupertinoNavigationBar(
@@ -145,7 +143,7 @@ class _BubbleShortState extends State<BubbleShort> {
                   "Enter the Digits",
                   style: TextStyle(fontSize: 38, color: Colors.black),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.1),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,7 +156,7 @@ class _BubbleShortState extends State<BubbleShort> {
                     EnterDigits(controller: _input6),
                   ],
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.1),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                 CupertinoButton(
                     color: Colors.black,
                     child: Text("Done"),
@@ -378,35 +376,5 @@ class BubbleDigits extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class EnterDigits extends StatelessWidget {
-  final TextEditingController controller;
-
-  const EnterDigits({Key key, this.controller}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      child: CupertinoTextField(
-        keyboardType: TextInputType.number,
-        maxLength: 4,
-        textAlign: TextAlign.center,
-        controller: controller,
-      ),
-    );
-  }
-}
-
-void validate(
-    String n1, String n2, String n3, String n4, String n5, String n6) {
-  if (n1.isEmpty ||
-      n2.isEmpty ||
-      n3.isEmpty ||
-      n4.isEmpty ||
-      n5.isEmpty ||
-      n6.isEmpty) {
-    throw Exception("Please Enter The Numbers");
   }
 }

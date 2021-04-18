@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:algori/enterTextField/textField.dart';
 import 'package:algori/logicState/linearSearchLogic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,15 +29,16 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
   //
   TextEditingController _getSearchValue = TextEditingController();
   String searchInteger = "";
-  List<int> _numbers = [122, 23, 4, 53, 5, 4];
+  List<int> _numbers = [];
   String _success = "";
   String _error = "";
   Color _colorsX = CupertinoColors.systemPurple;
   int _index = 0;
   int _foundIndex;
   List<int> _randomNumbersX = [];
-  int _sample = 200;
+  int _sample = 20;
   bool _higherValue = false;
+  bool _showNumberInput = true;
 
   _randomNumber() {
     if (_randomNumbersX.isEmpty) {
@@ -74,7 +76,6 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
 
   @override
   Widget build(BuildContext context) {
-    int counter = 0;
     final linearXTransform =
         Provider.of<LinearSearchLogicManagement>(context, listen: false);
     return Scaffold(
@@ -90,120 +91,179 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
                 ? SizedBox()
                 : CupertinoActivityIndicator(),
       ),
-      body: !_higherValue
+      body: _showNumberInput
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _numbers.length,
-                    itemBuilder: (context, ix) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundColor: _foundIndex == ix
-                                  ? CupertinoColors.activeGreen
-                                  : CupertinoColors.activeOrange,
-                              child: Text(
-                                _numbers[ix].toString(),
-                                style: TextStyle(
-                                    color: _foundIndex == ix
-                                        ? CupertinoColors.white
-                                        : CupertinoColors.black),
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            _index == ix
-                                ? CircleAvatar(
-                                    radius: 5,
-                                    backgroundColor: _colorsX,
-                                  )
-                                : SizedBox(),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                Text(
+                  "Enter the Digits",
+                  style: TextStyle(fontSize: 38, color: Colors.black),
                 ),
-                Text(_success),
-                Text(_error),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    EnterDigits(controller: _input1),
+                    EnterDigits(controller: _input2),
+                    EnterDigits(controller: _input3),
+                    EnterDigits(controller: _input4),
+                    EnterDigits(controller: _input5),
+                    EnterDigits(controller: _input6),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                CupertinoButton(
+                    color: Colors.black,
+                    child: Text("Done"),
+                    onPressed: () {
+                      try {
+                        validate(n1, n2, n3, n4, n5, n6);
+                        _numbers.add(int.parse(n1));
+                        _numbers.add(int.parse(n2));
+                        _numbers.add(int.parse(n3));
+                        _numbers.add(int.parse(n4));
+                        _numbers.add(int.parse(n5));
+                        _numbers.add(int.parse(n6));
+                        setState(() {
+                          _showNumberInput = false;
+                        });
+                      } catch (e) {
+                        print(e.message);
+                      }
+                    })
               ],
             )
-          : Container(child: Consumer(
-              builder: (context, _, child) {
-                return Row(
-                    children: _randomNumbersX.map((int e) {
-                  counter++;
-                  return CustomPaint(
-                    painter: BARLinearSearch(
-                      finalAnswer: linearXTransform.finalanswer ?? -1,
-                      width: MediaQuery.of(context).size.width / _sample,
-                      value: e,
-                      index: counter,
+          : !_higherValue
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _numbers.length,
+                        itemBuilder: (context, ix) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: _foundIndex == ix
+                                      ? CupertinoColors.activeGreen
+                                      : CupertinoColors.activeOrange,
+                                  child: Text(
+                                    _numbers[ix].toString(),
+                                    style: TextStyle(
+                                        color: _foundIndex == ix
+                                            ? CupertinoColors.white
+                                            : CupertinoColors.black),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                _index == ix
+                                    ? CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor: _colorsX,
+                                        child: Text(
+                                          searchInteger,
+                                          style: TextStyle(
+                                              color: _foundIndex == ix
+                                                  ? CupertinoColors.white
+                                                  : CupertinoColors.black),
+                                        ),
+                                      )
+                                    : SizedBox(),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  );
-                }).toList());
-              },
-            )),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: CupertinoButton(
-                color: CupertinoColors.systemRed,
-                child: Text("Search"),
-                onPressed: _takeSearch,
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: CupertinoButton(
-                color: CupertinoColors.systemRed,
-                child: Text("Visualize On Higher Values"),
-                onPressed: () {
-                  setState(() {
-                    _higherValue = true;
-                    print("Iananw");
-                    _randomNumber();
-                  });
-                },
-              ),
-            ),
-            SizedBox(width: 20),
-            !_higherValue
-                ? Expanded(
+                    Text(_success),
+                    Text(_error),
+                  ],
+                )
+              : Container(child: Consumer<LinearSearchLogicManagement>(
+                  builder: (context, _, child) {
+                    int counter = 0;
+                    return Row(
+                        children: _randomNumbersX.map((int e) {
+                      counter++;
+                      return CustomPaint(
+                        painter: BARLinearSearch(
+                          finalAnswer: linearXTransform.finalanswer ?? -1,
+                          width: MediaQuery.of(context).size.width / _sample,
+                          value: e,
+                          index: counter,
+                        ),
+                      );
+                    }).toList());
+                  },
+                )),
+      bottomNavigationBar: _showNumberInput
+          ? SizedBox()
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  !_higherValue
+                      ? Expanded(
+                          child: CupertinoButton(
+                            color: CupertinoColors.systemRed,
+                            child: Text("Search"),
+                            onPressed: _takeSearch,
+                          ),
+                        )
+                      : Expanded(
+                          child: CupertinoButton(
+                            color: CupertinoColors.systemRed,
+                            child: Text("Search"),
+                            onPressed: () =>
+                                linearXTransform.linearLogic(_randomNumbersX),
+                          ),
+                        ),
+                  SizedBox(width: 20),
+                  Expanded(
                     child: CupertinoButton(
                       color: CupertinoColors.systemRed,
-                      child: Text("Search For Values"),
+                      child: Text("Visualize On Higher Values"),
                       onPressed: () {
                         setState(() {
-                          _error = "";
+                          _higherValue = true;
+                          _randomNumber();
                         });
-                        !_higherValue
-                            ? _linearSearch()
-                            : linearXTransform.linearLogic(_randomNumbersX);
                       },
                     ),
-                  )
-                : CupertinoButton(
-                    color: CupertinoColors.systemRed,
-                    child: Text("Visualize On Lower Values"),
-                    onPressed: () {
-                      setState(() {
-                        _higherValue = false;
-                        _randomNumbersX = [];
-                      });
-                    },
                   ),
-          ],
-        ),
-      ),
+                  SizedBox(width: 20),
+                  !_higherValue
+                      ? Expanded(
+                          child: CupertinoButton(
+                            color: CupertinoColors.systemRed,
+                            child: Text("Search For Values"),
+                            onPressed: () {
+                              setState(() {
+                                _error = "";
+                              });
+                              _linearSearch();
+                            },
+                          ),
+                        )
+                      : CupertinoButton(
+                          color: CupertinoColors.systemRed,
+                          child: Text("Visualize On Lower Values"),
+                          onPressed: () {
+                            setState(() {
+                              _higherValue = false;
+                              _randomNumbersX = [];
+                            });
+                          },
+                        ),
+                ],
+              ),
+            ),
     );
   }
 

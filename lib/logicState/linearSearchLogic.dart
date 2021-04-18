@@ -4,7 +4,7 @@ class LinearSearchLogicManagement extends ChangeNotifier {
   bool processing = false;
   int finalanswer = -1;
 
-  void linearLogic(List<int> randomNumbersX) async {
+  void linearLogic(List<int> randomNumbersX) {
     processing = true;
     notifyListeners();
     int _element = (randomNumbersX..shuffle()).first;
@@ -15,7 +15,6 @@ class LinearSearchLogicManagement extends ChangeNotifier {
         notifyListeners();
         return;
       }
-      await Future.delayed(Duration(microseconds: 20));
     }
   }
 }
