@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,35 +9,7 @@ class BubbleShort extends StatefulWidget {
   _BubbleShortState createState() => _BubbleShortState();
 }
 
-class _BubbleShortState extends State<BubbleShort>
-    with TickerProviderStateMixin {
-  final double np1 = 20;
-  final double np2 = 150;
-  final double np3 = 250;
-  bool swapped = false;
-  Animation<double> addressAnimation;
-  AnimationController controller;
-  animationListener() => setState(() {});
-
-  @override
-  void didChangeDependencies() async {
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    addressAnimation = Tween(begin: 0.0, end: 100.0).animate(CurvedAnimation(
-        parent: controller,
-        curve: const Interval(0.0, 1.0, curve: Curves.easeInOut)))
-      ..addListener(animationListener);
-    super.didChangeDependencies();
-  }
-
-  @override
-  dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  int i = 0;
-  int j = 1;
+class _BubbleShortState extends State<BubbleShort> {
   TextEditingController _input1 = TextEditingController();
   TextEditingController _input2 = TextEditingController();
   TextEditingController _input3 = TextEditingController();
@@ -47,14 +22,75 @@ class _BubbleShortState extends State<BubbleShort>
   String get n4 => _input4.text;
   String get n5 => _input5.text;
   String get n6 => _input6.text;
-  List<int> numbersinput = [23, 342, 22, 3, 56, 8];
+  List<int> randomNumbers = [];
+  int _sample = 500;
+  List<int> numbersinput = [];
+  StreamController<List<int>> _controller;
+  Stream<List<int>> _stream;
 
-  double _opa = 0;
-  bool showText = true;
-  bool shortDone = false;
-  int loop1 = 0;
-  int loop2 = 0;
-  String swwwp = "";
+  bool higherValue = false;
+  bool graphVisual = false;
+  bool showNumberInput = true;
+
+  int loopi = 0;
+  int loopj = 0;
+
+  _randomNumbers() {
+    if (randomNumbers.isEmpty) {
+      for (int i = 0; i < _sample; i++) {
+        randomNumbers.add(Random().nextInt(_sample));
+      }
+      _controller.add(randomNumbers);
+    } else {
+      randomNumbers = [];
+      for (int i = 0; i < _sample; i++) {
+        randomNumbers.add(Random().nextInt(_sample));
+      }
+      _controller.add(randomNumbers);
+    }
+  }
+
+  _sort() async {
+    if (higherValue == false) {
+      for (int i = 0; i < numbersinput.length; i++) {
+        for (int j = 0; j < (numbersinput.length - i - 1); j++) {
+          if (numbersinput[j] > numbersinput[j + 1]) {
+            int temp = numbersinput[j];
+            numbersinput[j] = numbersinput[j + 1];
+            numbersinput[j + 1] = temp;
+          }
+          await Future.delayed(Duration(milliseconds: 500));
+          _controller.add(numbersinput);
+        }
+      }
+    } else {
+      for (int i = 0; i < randomNumbers.length; i++) {
+        for (int j = 0; j < (randomNumbers.length - i - 1); j++) {
+          if (randomNumbers[j] > randomNumbers[j + 1]) {
+            int temp = randomNumbers[j];
+            randomNumbers[j] = randomNumbers[j + 1];
+            randomNumbers[j + 1] = temp;
+          }
+          await Future.delayed(Duration(microseconds: 20));
+          _controller.add(randomNumbers);
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    _controller = StreamController();
+    _stream = _controller.stream.asBroadcastStream();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<double> position = [
@@ -65,266 +101,269 @@ class _BubbleShortState extends State<BubbleShort>
       MediaQuery.of(context).size.width * 0.65,
       MediaQuery.of(context).size.width * 0.75,
     ];
-    var tweenValue = addressAnimation.value ?? 0.0;
+    Color getColor(int number) {
+      if (number < 10) {
+        return Color(0xffBCD2E8);
+      }
+      if (number > 10 && number < 20) {
+        return Color(0xff91BAD6);
+      }
+      if (number > 20 && number <= 25) {
+        return Color(0xff73A5C6);
+      }
+      if (number > 25 && number <= 45) {
+        return Color(0xff528AAE);
+      }
+      if (number > 45 && number <= 95) {
+        return Color(0xff2E5984);
+      }
+      if (number > 95 && number <= 1000) {
+        return Color(0xff1E3F66);
+      }
+    }
+
+
+
     return Scaffold(
-      body: Container(
-        color: CupertinoColors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(width: double.infinity),
-            // showText
-            //     ? Text(
-            //         "Enter the Digits",
-            //         style: TextStyle(fontSize: 38, color: Colors.white),
-            //       )
-            //     : Text(''),
-            SizedBox(height: 50),
-            numbersinput.isNotEmpty
-                ? Column(children: [
-                    Container(width: double.infinity),
-                    Container(
-                      height: 120,
-                      child: Center(
-                        child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              BubbleDigits(
-                                numbers: numbersinput[0].toString(),
-                              ),
-                              BubbleDigits(
-                                numbers: numbersinput[1].toString(),
-                              ),
-                              BubbleDigits(
-                                numbers: numbersinput[2].toString(),
-                              ),
-                              BubbleDigits(
-                                numbers: numbersinput[3].toString(),
-                              ),
-                              BubbleDigits(
-                                numbers: numbersinput[4].toString(),
-                              ),
-                              BubbleDigits(
-                                numbers: numbersinput[5].toString(),
-                              ),
-                            ]),
-                      ),
-                    )
-                  ])
-                : Text(''),
-            // showText
-            //     ? Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //         crossAxisAlignment: CrossAxisAlignment.center,
-            //         children: [
-            //           EnterDigits(controller: _input1),
-            //           EnterDigits(controller: _input2),
-            //           EnterDigits(controller: _input3),
-            //           EnterDigits(controller: _input4),
-            //           EnterDigits(controller: _input5),
-            //           EnterDigits(controller: _input6),
-            //         ],
-            //       )
-            //     : SizedBox(),
-            // SizedBox(height: 50),
-            // showText
-            //     ? CupertinoButton(
-            //         color: Colors.black,
-            //         child: Text("Done"),
-            //         onPressed: () {
-            //           try {
-            //             validate(n1, n2, n3, n4, n5, n6);
-            //             numbersinput.add(int.parse(n1));
-            //             numbersinput.add(int.parse(n2));
-            //             numbersinput.add(int.parse(n3));
-            //             numbersinput.add(int.parse(n4));
-            //             numbersinput.add(int.parse(n5));
-            //             numbersinput.add(int.parse(n6));
-            //             setState(() {
-            //               showText = false;
-            //               _opa = 1;
-            //             });
-            //           } catch (e) {
-            //             print(e.message);
-            //           }
-            //         })
-            //     :
-            // !shortDone
-            //     ?
-
-            CupertinoButton(
-                color: CupertinoColors.systemRed,
-                child: Text("Sort"),
-                onPressed: () {
-                  setState(() {
-                    i = 0;
-                    j = 1;
-                  });
-                  int temp = 0;
-                  for (i = 0; i < numbersinput.length - 1; i++) {
-                    for (j = 1; j < (numbersinput.length - i); j++) {
-                      if (numbersinput[j - 1] > numbersinput[j]) {
-                        temp = numbersinput[j - 1];
-                        numbersinput[j - 1] = numbersinput[j];
-                        numbersinput[j] = temp;
+      appBar: CupertinoNavigationBar(
+        middle: Text("Bubble Short"),
+        trailing: higherValue && randomNumbers.isNotEmpty
+            ? FlatButton.icon(
+                onPressed: _randomNumbers,
+                icon: Icon(CupertinoIcons.refresh_thick),
+                label: Text('Make New Data'))
+            : SizedBox(),
+      ),
+      body: showNumberInput
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Enter the Digits",
+                  style: TextStyle(fontSize: 38, color: Colors.black),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    EnterDigits(controller: _input1),
+                    EnterDigits(controller: _input2),
+                    EnterDigits(controller: _input3),
+                    EnterDigits(controller: _input4),
+                    EnterDigits(controller: _input5),
+                    EnterDigits(controller: _input6),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.1),
+                CupertinoButton(
+                    color: Colors.black,
+                    child: Text("Done"),
+                    onPressed: () {
+                      try {
+                        validate(n1, n2, n3, n4, n5, n6);
+                        numbersinput.add(int.parse(n1));
+                        numbersinput.add(int.parse(n2));
+                        numbersinput.add(int.parse(n3));
+                        numbersinput.add(int.parse(n4));
+                        numbersinput.add(int.parse(n5));
+                        numbersinput.add(int.parse(n6));
+                        setState(() {
+                          showNumberInput = false;
+                          print("Hehehe");
+                        });
+                      } catch (e) {
+                        print(e.message);
                       }
-                    }
-                  }
-                  setState(() {
-                    shortDone = true;
-
-                    swwwp = "Last Swap Done at i = $i j =  $j";
-                  });
-                }),
-            SizedBox(height: 30),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // IconButton(
-                  //     icon: Icon(
-                  //       CupertinoIcons.back,
-                  //       color: Colors.black,
-                  //       size: 50,
-                  //     ),
-                  //     onPressed: () {
-                  //       int te = 0;
-                  //       j > 1
-                  //           ? setState(() {
-                  //               j--;
-                  //               swapped
-                  //                   ? controller.reverse()
-                  //                   : controller.forward();
-                  //               if (numbersinput[j + 1] < numbersinput[j]) {
-                  //                 te = numbersinput[j];
-                  //                 numbersinput[j] = numbersinput[j + 1];
-                  //                 numbersinput[j + 1] = te;
-                  //               }
-                  //             })
-                  //           : j = j;
-                  //     }),
-
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text("i = $i"),
-                            SizedBox(width: 10),
-                            Text("j = $j"),
-                          ],
-                        ),
-                        Text(swwwp),
-                      ]),
-
-                  SizedBox(width: 20),
-                  CupertinoButton(
-                      color: Colors.black,
-                      child: Icon(
-                        CupertinoIcons.forward,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        int te = 0;
-                        if (j == numbersinput.length &&
-                            i < numbersinput.length) {
-                          i++;
-                          j = 1;
-                        } else {
-                          numbersinput.length > j
-                              ? setState(() {
-                                  if (numbersinput[j - 1] > numbersinput[j]) {
-                                    te = numbersinput[j - 1];
-                                    numbersinput[j - 1] = numbersinput[j];
-                                    numbersinput[j] = te;
-                                    swwwp = "Swap Done at i = $i j =  $j";
-                                  }
-                                  j++;
-                                })
-                              : j = j;
-                        }
+                    })
+              ],
+            )
+          : !higherValue
+              ? Container(
+                  child: StreamBuilder<Object>(
+                      stream: _stream,
+                      builder: (context, snapshot) {
+                        return Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 200,
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: numbersinput.map((e) {
+                                    int index = numbersinput.indexOf(e);
+                                    return BubbleDigits(
+                                        color: getColor(numbersinput[index]),
+                                        numbers:
+                                            numbersinput[index].toString());
+                                  }).toList(),
+                                ),
+                              ),
+                              Text(
+                                "i = $loopi\nj = $loopj",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        );
                       }),
+                )
+              : Container(
+                  child: StreamBuilder<List<int>>(
+                      stream: _stream,
+                      builder: (context, snapshot) {
+                        int counter = 0;
+                        return Row(
+                            children: randomNumbers.map((int e) {
+                          counter++;
+                          return CustomPaint(
+                            painter: BarShow(
+                              width:
+                                  MediaQuery.of(context).size.width / _sample,
+                              value: e,
+                              index: counter,
+                            ),
+                          );
+                        }).toList());
+                      }),
+                ),
+      bottomNavigationBar: showNumberInput
+          ? SizedBox()
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CupertinoButton(
+                      color: CupertinoColors.systemRed,
+                      child: Text("Sort"),
+                      onPressed: _sort,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: CupertinoButton(
+                      color: CupertinoColors.systemRed,
+                      child: Text("Visualize On Higher Values"),
+                      onPressed: () {
+                        setState(() {
+                          higherValue = true;
+                          _randomNumbers();
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: higherValue
+                        ? CupertinoButton(
+                            color: CupertinoColors.systemRed,
+                            child: Text("Visualize On Lower Values"),
+                            onPressed: () {
+                              setState(() {
+                                higherValue = false;
+                                randomNumbers = [];
+                              });
+                            },
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              if (loopi < numbersinput.length) {
+                                if (numbersinput[loopj] >
+                                    numbersinput[loopj + 1]) {
+                                  int temp = numbersinput[loopj];
+                                  numbersinput[loopj] = numbersinput[loopj + 1];
+                                  numbersinput[loopj + 1] = temp;
+                                }
+                                setState(() {
+                                  loopj++;
+                                });
+                              }
+                              if (loopj >= numbersinput.length - 1) {
+                                setState(() {
+                                  loopi++;
+                                  loopj = 0;
+                                });
+                              }
+                            },
+                            child: Container(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.075,
+                              decoration: BoxDecoration(
+                                color: CupertinoColors.systemRed,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Step wise Step",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18)),
+                                  Icon(
+                                    CupertinoIcons.forward,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                  ),
                 ],
               ),
             ),
-
-            // : CupertinoButton(
-            //     color: CupertinoColors.black,
-            //     child: Text("Done"),
-            //     onPressed: () {
-            //       setState(() {
-            //         numbersinput.clear();
-            //         _input1.clear();
-            //         _input2.clear();
-            //         _input3.clear();
-            //         _input4.clear();
-            //         _input5.clear();
-            //         _input6.clear();
-            //       });
-
-            //       Navigator.pop(context);
-            //     }),
-          ],
-        ),
-      ),
     );
-    /*  return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 200,
-            width: 500,
-            child: Stack(
-              children: <Widget>[
-                // Top address
-                Positioned(
-                  top: 20,
-                  left: n2 + tweenValue,
-                  child: AnimatedOpacity(
-                    opacity: _opa,
-                    curve: Curves.decelerate,
-                    duration: Duration(milliseconds: 4000),
-                    child: BubbleDigits(
-                      numbers: numbersinput[0].toString(),
-                    ),
-                  ),
-                ),
-                // Bottom address
-                Positioned(
-                  top: 20,
-                  left: n1 - tweenValue,
-                  child: Text("This is another address"),
-                ),
-                // Swap button
-                Positioned(
-                  top: 150,
-                  right: 20,
-                  child: FlatButton(
-                    onPressed: () => setState(() {
-                      swapped ? controller.reverse() : controller.forward();
-                      swapped = !swapped;
-                    }),
-                    child: Text("swap"),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-    */
+  }
+}
+
+class BarShow extends CustomPainter {
+  final double width;
+  final int value;
+  final int index;
+
+  BarShow({this.width, this.value, this.index});
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint();
+    if (this.value < 10) {
+      paint.color = Color(0xffBCD2E8);
+    }
+    if (this.value > 10 && this.value < 20) {
+      paint.color = Color(0xff91BAD6);
+    }
+    if (this.value > 20 && this.value <= 25) {
+      paint.color = Color(0xff73A5C6);
+    }
+    if (this.value > 25 && this.value <= 45) {
+      paint.color = Color(0xff528AAE);
+    }
+    if (this.value > 45 && this.value <= 95) {
+      paint.color = Color(0xff2E5984);
+    }
+    if (this.value > 95 && this.value <= 1000) {
+      paint.color = Color(0xff1E3F66);
+    }
+
+    paint.strokeWidth = width;
+    paint.strokeCap = StrokeCap.round;
+    canvas.drawLine(Offset(index * width, 0),
+        Offset(index * width, value.ceilToDouble()), paint);
+    // TODO: implement paint
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    return true;
   }
 }
 
 class BubbleDigits extends StatelessWidget {
   final String numbers;
-
-  const BubbleDigits({Key key, this.numbers}) : super(key: key);
+  final Color color;
+  const BubbleDigits({Key key, this.color, this.numbers}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -332,7 +371,7 @@ class BubbleDigits extends StatelessWidget {
       padding: const EdgeInsets.all(18.0),
       child: CircleAvatar(
         radius: 50,
-        backgroundColor: Colors.black,
+        backgroundColor: color,
         child: Text(
           numbers,
           style: TextStyle(color: Colors.white),
@@ -352,7 +391,7 @@ class EnterDigits extends StatelessWidget {
       width: 50,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
-        maxLength: 3,
+        maxLength: 2,
         textAlign: TextAlign.center,
         controller: controller,
       ),
@@ -371,24 +410,3 @@ void validate(
     throw Exception("Please Enter The Numbers");
   }
 }
-// Positioned(
-//   top: 20,
-//   left: np1 + tweenValue,
-//   child: BubbleDigits(
-//     numbers: numbersinput[0].toString(),
-//   ),
-// ),
-// Positioned(
-//   top: 20,
-//   left: np2 - tweenValue,
-//   child: BubbleDigits(
-//     numbers: numbersinput[1].toString(),
-//   ),
-// ),
-// Positioned(
-//   top: 20,
-//   left: np3 - tweenValue,
-//   child: BubbleDigits(
-//     numbers: numbersinput[2].toString(),
-//   ),
-// ),
