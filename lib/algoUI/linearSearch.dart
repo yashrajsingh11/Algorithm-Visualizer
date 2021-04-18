@@ -33,7 +33,7 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
   int _index = 0;
   int _foundIndex;
   List<int> _randomNumbersX = [];
-  int _sample = 200;
+  int _sample = 30;
   bool _higherValue = false;
   int finalAnser;
   bool _processing = false;
@@ -75,25 +75,23 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
       setState(() {
         _processing = true;
       });
-      int _element = _randomNumbersX[Random().nextInt(_randomNumbersX.length)];
+      int _element = (_randomNumbersX..shuffle()).first;
       print(_element);
-      for (int i = 0; i < _numbers.length; i++) {
+      for (int i = 0; i < _randomNumbersX.length; i++) {
+        print(_randomNumbersX[i]);
+        if (_randomNumbersX[i] == _element) {
+          setState(() {
+            print("i am here");
+            finalAnser = _element;
+            _processing = false;
+          });
+          return;
+        }
         print(_numbers[i]);
-        // if (_numbers[i] == _element) {
-        //   setState(() {
-        //     print("i am here");
-        //     finalAnser = _element;
-        //     _processing = false;
-        //   });
-        //   return;
-        // }
-        // print(_numbers[i]);
-        // await Future.delayed(Duration(milliseconds: 200));
+        await Future.delayed(Duration(milliseconds: 200));
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,13 +99,15 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text("Linear Search"),
-        trailing: !_processing
+        trailing: !_processing && _higherValue
             // ignore: deprecated_member_use
             ? FlatButton.icon(
                 onPressed: _randomNumber,
                 icon: Icon(CupertinoIcons.refresh_thick),
                 label: Text('Make New Data'))
-            : CupertinoActivityIndicator(),
+            : !_higherValue
+                ? SizedBox()
+                : CupertinoActivityIndicator(),
       ),
       body: !_higherValue
           ? Column(
@@ -154,21 +154,18 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
               ],
             )
           : Container(
-              child:
-                     Row(
-                        children: _randomNumbersX.map((int e) {
-                      _counter++;
-                      return CustomPaint(
-                        painter: BARLinearSearch(
-                          finalAnswer: finalAnser ?? -1,
-                          width: MediaQuery.of(context).size.width / _sample,
-                          value: e,
-                          index: _counter,
-                        ),
-                      );
-                    }).toList())
-
-            ),
+              child: Row(
+                  children: _randomNumbersX.map((int e) {
+              _counter++;
+              return CustomPaint(
+                painter: BARLinearSearch(
+                  finalAnswer: finalAnser ?? -1,
+                  width: MediaQuery.of(context).size.width / _sample,
+                  value: e,
+                  index: _counter,
+                ),
+              );
+            }).toList())),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
