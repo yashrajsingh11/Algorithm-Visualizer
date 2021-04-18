@@ -23,7 +23,7 @@ class _BubbleShortState extends State<BubbleShort> {
   String get n5 => _input5.text;
   String get n6 => _input6.text;
   List<int> randomNumbers = [];
-  int _sample = 500;
+  int _sample = 180;
   List<int> numbersinput = [];
   StreamController<List<int>> _controller;
   Stream<List<int>> _stream;
