@@ -170,7 +170,6 @@ class _BubbleShortState extends State<BubbleShort> {
                         numbersinput.add(int.parse(n6));
                         setState(() {
                           showNumberInput = false;
-                          print("Hehehe");
                         });
                       } catch (e) {
                         print(e.message);
@@ -391,7 +390,7 @@ class EnterDigits extends StatelessWidget {
       width: 50,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
-        maxLength: 2,
+        maxLength: 4,
         textAlign: TextAlign.center,
         controller: controller,
       ),
