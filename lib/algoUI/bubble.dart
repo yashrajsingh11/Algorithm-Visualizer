@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -93,6 +92,7 @@ class _BubbleShortState extends State<BubbleShort> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     List<double> position = [
       MediaQuery.of(context).size.width * 0.25,
       MediaQuery.of(context).size.width * 0.35,
@@ -101,6 +101,7 @@ class _BubbleShortState extends State<BubbleShort> {
       MediaQuery.of(context).size.width * 0.65,
       MediaQuery.of(context).size.width * 0.75,
     ];
+    // ignore: missing_return
     Color getColor(int number) {
       if (number < 10) {
         return Color(0xffBCD2E8);
@@ -120,6 +121,7 @@ class _BubbleShortState extends State<BubbleShort> {
       if (number > 95 && number <= 1000) {
         return Color(0xff1E3F66);
       }
+
     }
 
 
@@ -128,6 +130,7 @@ class _BubbleShortState extends State<BubbleShort> {
       appBar: CupertinoNavigationBar(
         middle: Text("Bubble Short"),
         trailing: higherValue && randomNumbers.isNotEmpty
+            // ignore: deprecated_member_use
             ? FlatButton.icon(
                 onPressed: _randomNumbers,
                 icon: Icon(CupertinoIcons.refresh_thick),
@@ -349,12 +352,10 @@ class BarShow extends CustomPainter {
     paint.strokeCap = StrokeCap.round;
     canvas.drawLine(Offset(index * width, 0),
         Offset(index * width, value.ceilToDouble()), paint);
-    // TODO: implement paint
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
     return true;
   }
 }

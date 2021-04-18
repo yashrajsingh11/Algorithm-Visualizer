@@ -1,5 +1,7 @@
 import 'package:algori/algoUI/Merge.dart';
+import 'package:algori/algoUI/binarySearch.dart';
 import 'package:algori/algoUI/bubble.dart';
+import 'package:algori/algoUI/linearSearch.dart';
 import 'package:algori/algoUI/quick.dart';
 import 'package:algori/widgets/algoLabel.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,8 +21,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-       home: MyHomePage(),
-      //home: BubbleShort(),
+      // home: MyHomePage(),
+      home: LinearSearchUIX(),
     );
   }
 }
@@ -108,9 +110,59 @@ class AlgoOptions extends StatelessWidget {
                     algoName: "Merge Sort",
                   ),
                 ),
+
+
+
               ],
             ),
           ),
+          //2nd Row
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => BinarySearchUIX(),
+                    ),
+                  ),
+                  child: AlgoLabels(
+                    algoName: "Binary Search",
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => LinearSearchUIX(),
+                    ),
+                  ),
+                  child: AlgoLabels(
+                    algoName: "Linear Search",
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => print("Yaha pe rakho route"),
+                  //     Navigator.push(
+                  //   context,
+                  //   CupertinoPageRoute(
+                  //     builder: (context) => MergeSort(),
+                  //   ),
+                  // ),
+                  child: AlgoLabels(
+                    algoName: "Ek aur Search",
+                  ),
+                ),
+
+
+
+              ],
+            ),
+          ),
+
         ],
       ),
     );
