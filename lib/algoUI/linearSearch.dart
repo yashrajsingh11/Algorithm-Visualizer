@@ -36,7 +36,7 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
   int _index = 0;
   int _foundIndex;
   List<int> _randomNumbersX = [];
-  int _sample = 20;
+  int _sample = 500;
   bool _higherValue = false;
   bool _showNumberInput = true;
 

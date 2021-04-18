@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: MyHomePage(),
-      home: LinearSearchUIX(),
+      home: MyHomePage(),
+      //home: LinearSearchUIX(),
     );
   }
 }
