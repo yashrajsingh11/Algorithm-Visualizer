@@ -3,12 +3,17 @@ import 'package:algori/algoUI/binarySearch.dart';
 import 'package:algori/algoUI/bubble.dart';
 import 'package:algori/algoUI/linearSearch.dart';
 import 'package:algori/algoUI/quick.dart';
+import 'package:algori/logicState/linearSearchLogic.dart';
 import 'package:algori/widgets/algoLabel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<LinearSearchLogicManagement>(
+        create: (context) => LinearSearchLogicManagement())
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -110,9 +115,6 @@ class AlgoOptions extends StatelessWidget {
                     algoName: "Merge Sort",
                   ),
                 ),
-
-
-
               ],
             ),
           ),
@@ -156,13 +158,9 @@ class AlgoOptions extends StatelessWidget {
                     algoName: "Ek aur Search",
                   ),
                 ),
-
-
-
               ],
             ),
           ),
-
         ],
       ),
     );

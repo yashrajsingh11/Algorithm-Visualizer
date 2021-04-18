@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:algori/logicState/linearSearchLogic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LinearSearchUIX extends StatefulWidget {
   @override
@@ -33,10 +35,8 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
   int _index = 0;
   int _foundIndex;
   List<int> _randomNumbersX = [];
-  int _sample = 30;
+  int _sample = 200;
   bool _higherValue = false;
-  int finalAnser;
-  bool _processing = false;
 
   _randomNumber() {
     if (_randomNumbersX.isEmpty) {
@@ -52,54 +52,35 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
   }
 
   _linearSearch() async {
-    if (_higherValue == false) {
-      for (int i = 0; i < _numbers.length; i++) {
+    for (int i = 0; i < _numbers.length; i++) {
+      setState(() {
+        _index = i;
+      });
+      if (_numbers[i] == int.parse(searchInteger)) {
         setState(() {
-          _index = i;
+          _success = "${_numbers[i]} Found At the ${i + 1} in the Collection";
+          _colorsX = CupertinoColors.activeGreen;
+          _foundIndex = i;
         });
-        if (_numbers[i] == int.parse(searchInteger)) {
-          setState(() {
-            _success = "${_numbers[i]} Found At the ${i + 1} in the Collection";
-            _colorsX = CupertinoColors.activeGreen;
-            _foundIndex = i;
-          });
-          return;
-        }
-        await Future.delayed(Duration(milliseconds: 600));
+        return;
       }
-
-      setState(() {
-        _error = "No element found";
-      });
-    } else {
-      setState(() {
-        _processing = true;
-      });
-      int _element = (_randomNumbersX..shuffle()).first;
-      print(_element);
-      for (int i = 0; i < _randomNumbersX.length; i++) {
-        print(_randomNumbersX[i]);
-        if (_randomNumbersX[i] == _element) {
-          setState(() {
-            print("i am here");
-            finalAnser = _element;
-            _processing = false;
-          });
-          return;
-        }
-        print(_numbers[i]);
-        await Future.delayed(Duration(milliseconds: 200));
-      }
+      await Future.delayed(Duration(milliseconds: 600));
     }
+
+    setState(() {
+      _error = "No element found";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    int _counter = 0;
+    int counter = 0;
+    final linearXTransform =
+        Provider.of<LinearSearchLogicManagement>(context, listen: false);
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text("Linear Search"),
-        trailing: !_processing && _higherValue
+        trailing: !linearXTransform.processing && _higherValue
             // ignore: deprecated_member_use
             ? FlatButton.icon(
                 onPressed: _randomNumber,
@@ -153,19 +134,22 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
                 Text(_error),
               ],
             )
-          : Container(
-              child: Row(
-                  children: _randomNumbersX.map((int e) {
-              _counter++;
-              return CustomPaint(
-                painter: BARLinearSearch(
-                  finalAnswer: finalAnser ?? -1,
-                  width: MediaQuery.of(context).size.width / _sample,
-                  value: e,
-                  index: _counter,
-                ),
-              );
-            }).toList())),
+          : Container(child: Consumer(
+              builder: (context, _, child) {
+                return Row(
+                    children: _randomNumbersX.map((int e) {
+                  counter++;
+                  return CustomPaint(
+                    painter: BARLinearSearch(
+                      finalAnswer: linearXTransform.finalanswer ?? -1,
+                      width: MediaQuery.of(context).size.width / _sample,
+                      value: e,
+                      index: counter,
+                    ),
+                  );
+                }).toList());
+              },
+            )),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -174,7 +158,7 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
               child: CupertinoButton(
                 color: CupertinoColors.systemRed,
                 child: Text("Search"),
-                onPressed: !_higherValue ? _takeSearch : _linearSearch,
+                onPressed: _takeSearch,
               ),
             ),
             SizedBox(width: 20),
@@ -201,7 +185,9 @@ class _LinearSearchUIXState extends State<LinearSearchUIX> {
                         setState(() {
                           _error = "";
                         });
-                        _linearSearch();
+                        !_higherValue
+                            ? _linearSearch()
+                            : linearXTransform.linearLogic(_randomNumbersX);
                       },
                     ),
                   )
@@ -287,7 +273,7 @@ class BARLinearSearch extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
     if (this.value == finalAnswer) {
-      paint.color = Colors.greenAccent;
+      paint.color = Colors.red;
     }
     if (this.value < 10 && this.value > 0) {
       paint.color = Color(0xffBCD2E8);
