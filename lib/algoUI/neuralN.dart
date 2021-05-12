@@ -60,31 +60,18 @@ class NeuralNetUI extends StatelessWidget {
                           child: Text(
                             net.weights[0].toString(),
                             style: TextStyle(
-                                fontSize: 28, color: CupertinoColors.black),
+                                fontSize: 11, color: CupertinoColors.black),
                           ),
-                          backgroundColor: Colors.indigoAccent, radius: 45),
+                          backgroundColor: Colors.indigoAccent,
+                          radius: 45),
                       CircleAvatar(
                           child: Text(
                             net.weights[1].toString(),
                             style: TextStyle(
-                                fontSize: 28, color: CupertinoColors.black),
+                                fontSize: 11, color: CupertinoColors.black),
                           ),
-                          backgroundColor: Colors.indigoAccent, radius: 45),
-                      CircleAvatar(
-                          child: Text(
-                            net.weights[2].toString(),
-                            style: TextStyle(
-                                fontSize: 28, color: CupertinoColors.black),
-                          ),
-
-                          backgroundColor: Colors.indigoAccent, radius: 45),
-                      CircleAvatar(
-                          child: Text(
-                            net.weights[3].toString(),
-                            style: TextStyle(
-                                fontSize: 28, color: CupertinoColors.black),
-                          ),
-                          backgroundColor: Colors.indigoAccent, radius: 45),
+                          backgroundColor: Colors.indigoAccent,
+                          radius: 45),
                     ],
                   ),
                 )),
@@ -121,7 +108,7 @@ class NeuralNetUI extends StatelessWidget {
               child: CupertinoButton(
                 color: CupertinoColors.systemRed,
                 child: Text("Run The Network"),
-                onPressed: () => print(''),
+                onPressed: () async => await net.runNetwork(2),
               ),
             ),
             SizedBox(width: 20),
