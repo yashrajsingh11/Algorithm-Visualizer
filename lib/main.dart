@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
      home: MyHomePage(),
-    //  home: NeuralNetUI(),
+      //home: NeuralNetUI(),
     );
   }
 }
@@ -101,11 +101,11 @@ class AlgoOptions extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => QuickSort(),
+                      builder: (context) => SelectionSort(),
                     ),
                   ),
                   child: AlgoLabels(
-                    algoName: "Quick Sort",
+                    algoName: "Selection Sort",
                   ),
                 ),
                 GestureDetector(
