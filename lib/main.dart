@@ -3,7 +3,7 @@ import 'package:algori/algoUI/binarySearch.dart';
 import 'package:algori/algoUI/bubble.dart';
 import 'package:algori/algoUI/linearSearch.dart';
 import 'package:algori/algoUI/neuralN.dart';
-import 'package:algori/algoUI/quick.dart';
+import 'package:algori/algoUI/selection.dart';
 import 'package:algori/logicState/linearSearchLogic.dart';
 import 'package:algori/logicState/neuralNetowrkLogic.dart';
 import 'package:algori/widgets/algoLabel.dart';
