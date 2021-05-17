@@ -32,8 +32,9 @@ class _SelectionSortState extends State<SelectionSort> {
   bool graphVisual = false;
   bool showNumberInput = true;
 
-  int loopi = 4;
+  int loopi = 5;
   int loopj = 1;
+  int largest = 0;
 
   _randomNumbers() {
     if (randomNumbers.isEmpty) {
@@ -53,13 +54,13 @@ class _SelectionSortState extends State<SelectionSort> {
   _sort() async {
     if (higherValue == false) {
       for (int i = numbersinput.length-1; i >0; i--) {
-        int largest = 0;
+        int lar = 0;
         for (int j = 1; j <=i; j++) {
-          if (numbersinput[j] > numbersinput[largest]) {
-            largest = j;
+          if (numbersinput[j] > numbersinput[lar]) {
+            lar = j;
           }
-          int temp = numbersinput[largest];
-          numbersinput[largest] = numbersinput[i];
+          int temp = numbersinput[lar];
+          numbersinput[lar] = numbersinput[i];
           numbersinput[i] = temp;
           await Future.delayed(Duration(milliseconds: 500));
           _controller.add(numbersinput);
@@ -273,22 +274,23 @@ class _SelectionSortState extends State<SelectionSort> {
                 },
               )
                   : GestureDetector(
+
                 onTap: () {
+
                   if (loopi > 0) {
-                    int largest = 0;
+                    largest = 0;
                     if (numbersinput[loopj] >
                         numbersinput[largest]) {
                       largest = loopj;
-
                     }
-                    int temp = numbersinput[loopi];
-                    numbersinput[loopi] = numbersinput[largest];
-                    numbersinput[largest] = temp;
                     setState(() {
                       loopj++;
                     });
                   }
-                  if (loopj <= loopi ) {
+                  if (loopj >= loopi && loopi > 0 ) {
+                    int temp = numbersinput[loopi];
+                    numbersinput[loopi] = numbersinput[largest];
+                    numbersinput[largest] = temp;
                     setState(() {
                       loopi--;
                       loopj = 1;
