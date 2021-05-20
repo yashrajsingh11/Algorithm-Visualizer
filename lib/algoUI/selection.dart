@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 import 'dart:math';
 import 'package:algori/enterTextField/textField.dart';
 import 'package:flutter/cupertino.dart';
@@ -276,22 +277,29 @@ class _SelectionSortState extends State<SelectionSort> {
                   : GestureDetector(
 
                 onTap: () {
-
                   if (loopi > 0) {
-                    largest = 0;
+
                     if (numbersinput[loopj] >
                         numbersinput[largest]) {
-                      largest = loopj;
+                      setState(() {
+                        largest = loopj;
+                      });
+
+                      print(largest);
                     }
                     setState(() {
                       loopj++;
                     });
                   }
                   if (loopj >= loopi && loopi > 0 ) {
+
                     int temp = numbersinput[loopi];
                     numbersinput[loopi] = numbersinput[largest];
+                    print(largest);
                     numbersinput[largest] = temp;
+
                     setState(() {
+                      largest = 0;
                       loopi--;
                       loopj = 1;
                     });
