@@ -1,9 +1,11 @@
 import 'package:algori/algoUI/Merge.dart';
 import 'package:algori/algoUI/binarySearch.dart';
 import 'package:algori/algoUI/bubble.dart';
+import 'package:algori/algoUI/heapSort.dart';
 import 'package:algori/algoUI/linearSearch.dart';
 import 'package:algori/algoUI/selection.dart';
 import 'package:algori/logicState/binarySearch.dart';
+import 'package:algori/logicState/heapLogic.dart';
 import 'package:algori/logicState/linearSearchLogic.dart';
 import 'package:algori/widgets/algoLabel.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +18,8 @@ void main() {
         create: (context) => LinearSearchLogicManagement()),
     ChangeNotifierProvider<BinarySearchLogic>(
         create: (context) => BinarySearchLogic()),
+
+    ChangeNotifierProvider<HeapLogic>(create: (context) => HeapLogic()),
     // ChangeNotifierProvider<NeuralNetworkLogicxX>(
     //     create: (context) => NeuralNetworkLogicxX()),
   ], child: MyApp()));
@@ -31,8 +35,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      //home: MyHomePage(),
-      home: BinarySearchUIX(),
+      // home: MyHomePage(),
+      home: HeapSort(),
     );
   }
 }
@@ -152,15 +156,14 @@ class AlgoOptions extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => print("Yaha pe rakho route"),
-                  //     Navigator.push(
-                  //   context,
-                  //   CupertinoPageRoute(
-                  //     builder: (context) => MergeSort(),
-                  //   ),
-                  // ),
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => HeapSort(),
+                    ),
+                  ),
                   child: AlgoLabels(
-                    algoName: "Ek aur Search",
+                    algoName: "Heap Sort",
                   ),
                 ),
               ],
