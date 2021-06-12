@@ -2,10 +2,9 @@ import 'package:algori/algoUI/Merge.dart';
 import 'package:algori/algoUI/binarySearch.dart';
 import 'package:algori/algoUI/bubble.dart';
 import 'package:algori/algoUI/linearSearch.dart';
-import 'package:algori/algoUI/neuralN.dart';
 import 'package:algori/algoUI/selection.dart';
+import 'package:algori/logicState/binarySearch.dart';
 import 'package:algori/logicState/linearSearchLogic.dart';
-import 'package:algori/logicState/neuralNetowrkLogic.dart';
 import 'package:algori/widgets/algoLabel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +14,10 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<LinearSearchLogicManagement>(
         create: (context) => LinearSearchLogicManagement()),
-    ChangeNotifierProvider<NeuralNetworkLogicxX>(
-        create: (context) => NeuralNetworkLogicxX()),
+    ChangeNotifierProvider<BinarySearchLogic>(
+        create: (context) => BinarySearchLogic()),
+    // ChangeNotifierProvider<NeuralNetworkLogicxX>(
+    //     create: (context) => NeuralNetworkLogicxX()),
   ], child: MyApp()));
 }
 
@@ -30,8 +31,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-     home: MyHomePage(),
-      //home: NeuralNetUI(),
+      //home: MyHomePage(),
+      home: BinarySearchUIX(),
     );
   }
 }
