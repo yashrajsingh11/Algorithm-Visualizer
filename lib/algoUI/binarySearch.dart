@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:algori/enterTextField/textField.dart';
 import 'package:algori/logicState/binarySearch.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,12 +26,6 @@ class BinarySearchUIX extends StatelessWidget {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text("Binary Search"),
-        trailing: !binaryLogic.enternumbers
-            // ignore: deprecated_member_use
-            ? FlatButton.icon(
-                icon: Icon(CupertinoIcons.refresh_thick),
-                label: Text('Make New Data'))
-            : SizedBox(),
       ),
       body: binaryLogic.enternumbers
           ? Column(

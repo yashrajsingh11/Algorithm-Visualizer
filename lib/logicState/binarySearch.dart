@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class BinarySearchLogic extends ChangeNotifier {
-  List<int> numbers = [1, 2, 3, 4, 5, 6];
-  bool enternumbers = false;
+  List<int> numbers = [];
+  bool enternumbers = true;
   int searchKey = -1;
   int index = -1;
   String error = "";
@@ -20,6 +20,7 @@ class BinarySearchLogic extends ChangeNotifier {
   Color defaultColor = CupertinoColors.systemTeal;
   void getInput(List<int> numb) {
     numbers = numb;
+    numbers = numbers..sort();
     enternumbers = false;
     notifyListeners();
   }
