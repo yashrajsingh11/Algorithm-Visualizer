@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:algori/enterTextField/textField.dart';
 import 'package:algori/logicState/binarySearch.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +14,8 @@ class BinarySearchUIX extends StatelessWidget {
   TextEditingController _input4 = TextEditingController();
   TextEditingController _input5 = TextEditingController();
   TextEditingController _input6 = TextEditingController();
+  TextEditingController __getSearchValue = TextEditingController();
+
   String get n1 => _input1.text;
   String get n2 => _input2.text;
   String get n3 => _input3.text;
@@ -24,6 +28,12 @@ class BinarySearchUIX extends StatelessWidget {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text("Binary Search"),
+        trailing: !binaryLogic.enternumbers
+            // ignore: deprecated_member_use
+            ? FlatButton.icon(
+                icon: Icon(CupertinoIcons.refresh_thick),
+                label: Text('Make New Data'))
+            : SizedBox(),
       ),
       body: binaryLogic.enternumbers
           ? Column(
@@ -71,30 +81,70 @@ class BinarySearchUIX extends StatelessWidget {
           : Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: 200,
+                    height: 100,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: binaryLogic.numbers.map(
                         (e) {
                           int index = binaryLogic.numbers.indexOf(e);
-                          return Container(
-                            height: 200,
-                            width: 200,
-                            child: CircleAvatar(
-                              backgroundColor: binaryLogic.region[index] == 0
-                                  ? binaryLogic.inactiveArea
-                                  : binaryLogic.activeArea,
-                              child:
-                                  Text(binaryLogic.numbers[index].toString()),
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 100,
+                              width: 150,
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor:
+                                        binaryLogic.region[index] == 0
+                                            ? binaryLogic.mid == -1
+                                                ? binaryLogic.defaultColor
+                                                : binaryLogic.inactiveArea
+                                            : binaryLogic.activeArea,
+                                    child: Text(
+                                      binaryLogic.numbers[index].toString(),
+                                      style: TextStyle(
+                                          color: CupertinoColors.black,
+                                          fontSize: 22),
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  index == binaryLogic.mid
+                                      ? CircleAvatar(
+                                          radius: 5,
+                                          backgroundColor:
+                                              CupertinoColors.activeGreen,
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
                             ),
-                            color: Colors.red,
                           );
                         },
                       ).toList(),
                     ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: binaryLogic.mid == -1
+                        ? SizedBox()
+                        : Text("Mid${binaryLogic.mid + 1}"),
+                  ),
+                  binaryLogic.rand == -1
+                      ? SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                              "For Step By Step Our Search Key is ${binaryLogic.numbers[binaryLogic.rand]}"),
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: binaryLogic.error.isEmpty
+                        ? SizedBox()
+                        : Text(binaryLogic.error),
                   ),
                 ],
               ),
@@ -110,16 +160,9 @@ class BinarySearchUIX extends StatelessWidget {
                       color: CupertinoColors.systemRed,
                       child: Text("Search"),
                       onPressed: () async {
-                        await binaryLogic.entertheKey(1);
+                        await _takeSearch(
+                            context, __getSearchValue, binaryLogic);
                       },
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: CupertinoButton(
-                      color: CupertinoColors.systemRed,
-                      child: Text("Visualize On Higher Values"),
-                      onPressed: () {},
                     ),
                   ),
                   SizedBox(width: 20),
@@ -132,7 +175,11 @@ class BinarySearchUIX extends StatelessWidget {
                           )
                         : GestureDetector(
                             onTap: () {
-                              binaryLogic.stepwisestep(1);
+                              binaryLogic.rand == -1
+                                  ? binaryLogic.getARandom()
+                                  : print('');
+                              binaryLogic.stepwisestep(
+                                  binaryLogic.numbers[binaryLogic.rand]);
                             },
                             child: Container(
                               height:
@@ -160,6 +207,62 @@ class BinarySearchUIX extends StatelessWidget {
                 ],
               ),
             ),
+    );
+  }
+
+  Future<void> _takeSearch(
+      BuildContext context,
+      TextEditingController _getSearchValue,
+      BinarySearchLogic binarySearchLogic) async {
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoDialogAction(
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.29,
+            decoration: BoxDecoration(
+                color: CupertinoColors.white,
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, 2),
+                    color: CupertinoColors.systemGrey4.withOpacity(0.4),
+                    spreadRadius: 4.0,
+                    blurRadius: 1.0,
+                  )
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        child: Icon(CupertinoIcons.clear),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  CupertinoTextField(
+                    controller: _getSearchValue,
+                  ),
+                  SizedBox(height: 20),
+                  CupertinoButton(
+                      color: CupertinoColors.black,
+                      child: Text("Done"),
+                      onPressed: () async {
+                        await binarySearchLogic.entertheKey(
+                            int.parse(_getSearchValue.text.toString()),
+                            context);
+                      }),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
